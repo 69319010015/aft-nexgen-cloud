@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+/* ============================================
+   AFT NexGen Cloud — Global Styles
+   Light/Dark theme with 60-30-10 color rule
+   ============================================ */
+
+:root {
+  /* 60% Dominant — Backgrounds */
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f8fafc;
+  --color-bg-card: #ffffff;
+
+  /* 30% Secondary — Structural, Text, Navigation */
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-muted: #94a3b8;
+  --color-border: #e2e8f0;
+  --color-nav-bg: #1e3a8a;
+  --color-nav-text: #ffffff;
+
+  /* 10% Accent — Tech Yellow */
+  --color-accent: #eab308;
+  --color-accent-hover: #facc15;
+  --color-accent-light: #fefce8;
+
+  /* Success / Danger / Warning */
+  --color-success: #22c55e;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+
+  /* Typography (overridable via JS) */
+  --font-family-body: 'Noto Sans Thai', sans-serif;
+  --text-size-base: 16px;
+}
+
+.dark {
+  /* 60% Dominant — Backgrounds */
+  --color-bg-primary: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-card: #1e293b;
+
+  /* 30% Secondary — Structural, Text, Navigation */
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #64748b;
+  --color-border: #334155;
+  --color-nav-bg: #0f172a;
+  --color-nav-text: #f1f5f9;
+
+  /* 10% Accent — Tech Yellow */
+  --color-accent: #facc15;
+  --color-accent-hover: #eab308;
+  --color-accent-light: #422006;
+
+  /* Success / Danger / Warning */
+  --color-success: #4ade80;
+  --color-danger: #f87171;
+  --color-warning: #fbbf24;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-family: var(--font-family-body, 'Noto Sans Thai', sans-serif);
+  font-size: var(--text-size-base, 16px);
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-text-muted);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-secondary);
+}
+
+/* Table styles */
+.table-container {
+  @apply overflow-x-auto rounded-lg border;
+  border-color: var(--color-border);
+}
+
+/* Card styles */
+.card {
+  @apply rounded-lg border p-4 md:p-6;
+  border-color: var(--color-border);
+}
+
+/* Light mode: Soft Gradient */
+.card-gradient {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+.dark .card-gradient {
+  background: rgba(30, 41, 59, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Accent card: stronger gradient */
+.card-gradient-accent {
+  background: linear-gradient(135deg, #ffffff 0%, #fefce8 100%);
+}
+
+.dark .card-gradient-accent {
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(234, 179, 8, 0.25);
+}
+
+/* Glassmorphism footer/pagination */
+.card-glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.dark .card-glass {
+  background: rgba(30, 41, 59, 0.5);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.06);
+}
+
+/* Button styles */
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-all duration-200;
+  background-color: var(--color-accent);
+  color: #0f172a;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent-hover);
+}
+
+.btn-outline {
+  @apply inline-flex items-center justify-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all duration-200;
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.btn-outline:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* Input styles */
+.input-field {
+  @apply w-full rounded-lg border px-3 py-2 text-sm transition-all duration-200;
+  background-color: var(--color-bg-primary);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--color-accent-light);
+}
+
+/* Adaptive text banner — auto-adjusts text color for Light/Dark mode */
+.adaptive-text-banner p {
+  transition: color 0.2s ease;
+}
