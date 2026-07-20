@@ -2,6 +2,11 @@
   "name": "aft-nexgen-cloud",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://github.com/69319010015/aft-nexgen-cloud",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/69319010015/aft-nexgen-cloud.git"
+  },
   "scripts": {
     "dev": "node --max-old-space-size=2048 node_modules/next/dist/bin/next dev",
     "build": "next build",
