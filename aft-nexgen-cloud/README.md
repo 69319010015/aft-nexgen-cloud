@@ -3,7 +3,7 @@
 **ระบบบริหารจัดการโครงการและงบประมาณ วิทยาลัยเทคนิคอุดรธานี**
 **Project & Budget Management System — Udon Thani Technical College (UDTC)**
 
-[![GitHub Repository](https://img.shields.io/badge/GitHub-aft--nexgen--cloud-181717?style=flat&logo=github)](https://github.com/69319010015/aft-nexgen-cloud)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-aft--nexgen--cloud-181717?style=flat&logo=github)](https://github.com/69319010015/aft-nexgen-cloud.git)
 
 ---
 

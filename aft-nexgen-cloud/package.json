@@ -2,7 +2,7 @@
   "name": "aft-nexgen-cloud",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/69319010015/aft-nexgen-cloud",
+  "homepage": "https://github.com/69319010015/aft-nexgen-cloud.git",
   "repository": {
     "type": "git",
     "url": "https://github.com/69319010015/aft-nexgen-cloud.git"
