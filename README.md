@@ -9,27 +9,26 @@
 
 ## ⚡ How to Run (วิธีรัน)
 
-**Your project is located at:**
 ```
-d:\Project อวท (old 7.16.2026)\aft-nexgen-cloud
+c:\Users\IT-PC\Downloads\aft-nexgen-cloud-main (1)\aft-nexgen-cloud-main
 ```
 
 ### Option 1: Double-Click (ง่ายที่สุด)
 1. Open **File Explorer**
-2. Go to `d:\Project อวท (old 7.16.2026)\aft-nexgen-cloud`
+2. Go to your project folder
 3. Double-click **`run-dev.bat`**
-4. Open your browser → **http://localhost:3000**
+4. Open browser → **http://localhost:3000**
 
 ### Option 2: VS Code Terminal
 ```bash
-cd "d:\Project อวท (old 7.16.2026)\aft-nexgen-cloud"
+cd "c:\Users\IT-PC\Downloads\aft-nexgen-cloud-main (1)\aft-nexgen-cloud-main"
 npm install   # only the first time
 npm run dev
 ```
 
 ### Demo Accounts
 | Role | Username/Email | Password |
-|---|---|---|
+|------|---------------|----------|
 | **Teacher** | `teacher@udontech.ac.th` | `69319010015` |
 | **Admin (อวท.)** | `admin@udontech.ac.th` | `69319010015` |
 | **Student** | `69319010015` | `1419902419920` |
@@ -40,7 +39,7 @@ npm run dev
 
 ## 📋 Project Overview & Scope
 
-**AFT NexGen Cloud** is an official vocational application built for Udon Thani Technical College (UDTC) to modernize and streamline project and budget management. It provides college directors, faculty, and student leaders with a Thai-language dashboard to track events, monitor budgets, manage failed students, and process student registrations.
+**AFT NexGen Cloud** is an official vocational application built for Udon Thani Technical College (UDTC) to modernize and streamline project and budget management. It provides college directors, faculty, and student leaders with a Thai-language dashboard to track events, monitor budgets, manage failed students, process student registrations, and **upload/view annual activity plans with Excel data**.
 
 ### Key Objectives
 - Replace paper-based or spreadsheet-driven project tracking with a centralized web platform
@@ -49,18 +48,19 @@ npm run dev
 - Support 3 user roles: **Guest** (read-only), **Student** (limited edit), **Teacher** (full admin)
 - Manage failed students with reason tracking (ไม่เข้าแถว / ไม่เข้ากิจกรรม / ไม่เข้าลูกเสือ)
 - Student self-registration with teacher approval workflow
-- Secure PDF document storage and retrieval via Supabase Storage (signed URLs)
+- **Upload annual activity plans (Excel/PDF/DOCX) and parse Excel data into web tables**
+- Secure document storage and retrieval via Supabase Storage
 - Deploy on Vercel Free Tier with environment-protected API keys
 
 ### Tech Stack
-| Layer        | Technology                               |
-|--------------|------------------------------------------|
+| Layer | Technology |
+|-------|-----------|
 | **Frontend** | Next.js 16+ (App Router), TypeScript, Tailwind CSS |
 | **Database** | Supabase (PostgreSQL with Row-Level Security) |
-| **Storage**  | Supabase Storage (private bucket, signed URLs) |
-| **Auth**     | Supabase Auth + Google OAuth + Middleware session guard |
-| **Deployment** | Vercel (Free Tier)                     |
-| **Theme**    | Light/Dark mode with 60-30-10 color rule |
+| **Storage** | Supabase Storage (private bucket, signed URLs) |
+| **Auth** | Supabase Auth + Google OAuth + Middleware session guard |
+| **Deployment** | Vercel (Free Tier) |
+| **Theme** | Light/Dark mode with 60-30-10 color rule |
 
 > See `TOOL.md` for full tech stack details.
 
@@ -99,6 +99,17 @@ npm run dev
 - Teacher demo: `teacher@udontech.ac.th` / `69319010015`
 - Admin demo: `admin@udontech.ac.th` / `69319010015`
 
+### ✅ Annual Activity Plans (แผนปฏิบัติกิจกรรมประจำปีงบประมาณ)
+- **Route**: `/annual-plan`
+- **Upload**: Teacher-only — click 📤 อัปโหลดแผน / Upload Plan → fill form + select file (xlsx/xls/pdf/docx)
+- **Excel Parsing**: `.xlsx` / `.xls` files are parsed server-side with the `xlsx` library — column headers and row data are extracted and stored as JSONB in Supabase
+- **Data Display**: Each plan card shows title, club, fiscal year, quarter, status badge. Click to expand — reveals parsed Excel data in a grid table
+- **Status**: New uploads automatically set to "✅ ดำเนินการแล้ว" (no pending approval needed since only teachers can upload)
+- **Delete**: Teacher-only 🗑️ trash icon on each card — deletes from database with confirmation dialog
+- **Filter**: Search by title/club/description + filter by fiscal year dropdown
+- **Database**: `activity_plans` table with JSONB columns (`excel_columns`, `excel_data`) for parsed content
+- **API**: `/api/activity-plans` with GET (list), POST (upload), DELETE (remove)
+
 ### ✅ Gemini-Style Sidebar Navigation
 - Opens by default on page load
 - **4 permission-gated groups**:
@@ -131,7 +142,7 @@ npm run dev
 - **Data source**: Hard-coded mock posts in `FacebookFeed.tsx`
 
 ### ✅ Additional Pages
-- **แผนปฏิบัติกิจกรรมประจำปีงบประมาณ / Annual Plan** (`/annual-plan`) — Annual budget activity plan
+- **แผนปฏิบัติกิจกรรมประจำปีงบประมาณ / Annual Plan** (`/annual-plan`) — Annual budget activity plan with Excel upload & parsing
 - **ชมรมวิชาชีพ / Club** (`/club`) — Professional club directory with search and filters
 - **ระเบียบและแนวทางการปฏิบัติ อวท. / Regulations** (`/regulations`) — Activity guidelines and regulations
 - **แบบฟอร์ม อวท. / AFT Forms** (`/aft-forms`) — Document download library page
@@ -144,7 +155,7 @@ npm run dev
 ### ✅ Database Connection Models
 - **Supabase Browser Client** (`src/lib/supabase/client.ts`): Client components
 - **Supabase Server Client** (`src/lib/supabase/server.ts`): Server components & route handlers
-- **Supabase Admin Client** (`src/lib/supabase/admin.ts`): Service role operations
+- **Supabase Admin Client** (`src/lib/supabase/admin.ts`): Service role operations (bypasses RLS)
 
 ### ✅ Secure PDF Downloads
 - Government PDF templates stored in private Supabase Storage bucket (`project-pdfs`)
@@ -185,12 +196,12 @@ npm run dev
 - [x] Proposal page — project proposal submission
 - [x] Summary page — summary reports
 - [x] Middleware — route protection, PENDING user redirect
-- [x] API routes: `/api/auth/*` (login, register, recover, requests, approve, **callback**)
+- [x] API routes: `/api/auth/*` (login, register, recover, requests, approve, callback)
 - [x] OAuth callback route (`/api/auth/callback`) — email domain validation + session setup
 - [x] Server-side email domain restriction (`@udontech.ac.th`) in login API
 - [x] Dashboard layout — no Header (clean page)
-- [x] Database migrations — `profiles`, `projects`, `registration_requests` tables + auth v2
-- [x] `.env.local` with Supabase credentials configured
+- [x] Database migrations — `profiles`, `projects`, `registration_requests`, `activity_plans` tables
+- [x] `.env.local` with Supabase credentials configured (URL + anon key + service role key)
 - [x] Demo data pre-loaded for immediate visual testing
 - [x] Teacher demo account (`teacher@udontech.ac.th` / `69319010015`)
 - [x] Admin demo account (`admin@udontech.ac.th` / `69319010015`)
@@ -199,15 +210,18 @@ npm run dev
 - [x] Failed students reason tracking with inline edit
 - [x] Failed students room text input in edit mode
 - [x] Teacher-only delete for failed students
-- [x] SettingsProvider — font style (Noto/TH Sarabun), text size, notification preferences with localStorage persistence
-- [x] SettingsModal — Appearance/Light-Dark pills, Typography (ฟอนต์มาตรฐานปัจจุบัน, TH Sarabun), Text Size (เล็ก/กลาง/ใหญ่), Notifications toggle
+- [x] SettingsProvider — font style (Kanit/TH Sarabun), text size, notification preferences with localStorage persistence
+- [x] SettingsModal — Appearance/Light-Dark pills, Typography, Text Size slider, Notifications toggle
 - [x] Thai localization — all Settings text translated to Thai
-- [x] Toggle knob color — gray for all ON/OFF states regardless of theme
 - [x] FacebookFeed — 5 mock posts with image carousel, pagination dots, prev/next controls
+- [x] **Activity Plans page** (`/annual-plan`) with upload modal, Excel parsing, data display, delete button
+- [x] **API route** `/api/activity-plans` — GET (list), POST (upload with file + form), DELETE (by id)
+- [x] **Excel parsing** — `xlsx` npm library reads `.xlsx`/`.xls` → columns + rows stored as JSONB in `excel_columns` / `excel_data`
+- [x] **Service role key** in `.env.local` for admin client bypassing RLS
+- [x] **Demo user auth** — API checks `aft-user-type` cookie fallback for teacher demo accounts
+- [x] **Database migration** `003_activity_plans.sql` — table with RLS policies, indexes, auto-update trigger
 
 ### 🔲 Pending (Future Phases)
-- [ ] Run database migration on Supabase SQL Editor
-- [ ] Create Supabase Auth users with real email/password
 - [ ] Configure Google OAuth in Supabase Dashboard (Authentication → Providers → Google)
 - [ ] Upload government PDF templates to `project-pdfs` storage bucket
 - [ ] Configure Vercel deployment with environment variables
@@ -225,7 +239,7 @@ aft-nexgen-cloud/
 ├── .env.local                       # Local Supabase credentials (configured)
 ├── .gitignore
 ├── README.md
-├── TOOL.md                          # Tech stack & tools reference (← including Settings + Facebook Feed docs)
+├── TOOL.md                          # Tech stack & tools reference
 ├── AGENTS.md
 ├── CLAUDE.md
 ├── next.config.ts
@@ -236,7 +250,8 @@ aft-nexgen-cloud/
 ├── eslint.config.mjs
 ├── install-deps.bat                 # Windows dependency install script
 ├── run-dev.bat                      # Windows dev server runner
-├── mcp-filesystem.bat               # MCP filesystem config
+├── run-all-migrations.sql           # Combined SQL migrations (for Supabase SQL Editor)
+├── supabase-guide.md                # Guide for running migrations
 ├── public/
 │   ├── images/
 │   │   └── aft-logo.png             # AFT NexGen Cloud logo
@@ -244,17 +259,18 @@ aft-nexgen-cloud/
 ├── supabase/
 │   └── migrations/
 │       ├── 001_initial_schema.sql   # Base schema, RLS, triggers
-│       └── 002_auth_system.sql      # Auth system v2
+│       ├── 002_auth_system.sql      # Auth system v2
+│       └── 003_activity_plans.sql   # Activity plans table + Excel JSON columns
 └── src/
     ├── middleware.ts                 # Route protection
     ├── app/
     │   ├── layout.tsx               # Root layout + providers (Supabase → Theme → Settings)
     │   ├── globals.css              # CSS variables, Tailwind directives
-    │   ├── page.tsx                 # Main SPA: all sections (no TeacherDashboard)
-    │   ├── favicon.ico
+    │   ├── page.tsx                 # Main SPA: all sections
     │   ├── login/page.tsx           # 3 tabs + Google OAuth + domain error
     │   ├── register/page.tsx
     │   ├── pending/page.tsx
+    │   ├── annual-plan/page.tsx     # Annual Activity Plan page
     │   ├── club/page.tsx
     │   ├── forms/page.tsx
     │   ├── guidelines/page.tsx
@@ -264,9 +280,12 @@ aft-nexgen-cloud/
     │   │   ├── layout.tsx           # Clean layout (no Header)
     │   │   └── page.tsx             # TeacherDashboard + ActivityListView
     │   └── api/
-    │       └── auth/
-    │           ├── callback/route.ts # OAuth callback + domain validation
-    │           └── ...
+    │       ├── activity-plans/
+    │       │   └── route.ts         # GET (list) + POST (upload) + DELETE
+    │       ├── auth/
+    │       │   ├── callback/route.ts
+    │       │   └── ...
+    │       └── projects/route.ts
     ├── components/
     │   ├── layout/
     │   │   ├── ClientLayout.tsx
@@ -314,12 +333,14 @@ The `.env.local` file is already configured with Supabase credentials:
 # .env.local
 NEXT_PUBLIC_SUPABASE_URL=https://plsevkiwvivrqjjuuvgn.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_cP2ZTP5wWyEaYVcNq0xGlQ_3rV3E8Na
+# SUPABASE_SERVICE_ROLE_KEY=your-service-role-key (set in local .env only)
 ```
 
 | Variable | Description | Required |
 |----------|-------------|----------|
 | `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL | ✅ Yes |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anonymous/publishable key | ✅ Yes |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key (bypasses RLS — set in local .env only) | ✅ For admin operations |
 | `NEXT_PUBLIC_SITE_URL` | Site URL for OAuth redirects (e.g. `http://localhost:3000`) | ✅ For OAuth |
 | `DEEPSEEK_API_KEY` | For future AI features | ❌ Optional |
 
@@ -335,16 +356,14 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_cP2ZTP5wWyEaYVcNq0xGlQ_3rV3E8Na
 | **ปุ่ม Settings** (ใน Header) | `src/components/layout/Header.tsx` | 57-66 |
 | **ข้อความใน Modal Settings** | `src/components/ui/SettingsModal.tsx` | 106, 125-142, 154-183, 191-218, 224-229 |
 | **Font Style options** (เพิ่ม/ลดฟอนต์) | `src/components/ui/SettingsProvider.tsx` | 26-30 |
-| **Text Size values** (เล็ก=14px, กลาง=16px, ใหญ่=18px) | `src/components/ui/SettingsProvider.tsx` | 33-37 |
-| **Notification permission logic** | `src/components/ui/SettingsProvider.tsx` | 113-138 |
-| **Toggle knob color** (ON/OFF) | `src/components/ui/SettingsModal.tsx` | 208 |
+| **Text Size values** | `src/components/ui/SettingsProvider.tsx` | 33-37 |
 | **Facebook Feed — รูป/ข้อความโพสต์** | `src/components/ui/FacebookFeed.tsx` | 40-115 (mock posts array) |
-| **Facebook Feed — pagination dots** | `src/components/ui/FacebookFeed.tsx` | 165-175 |
-| **Facebook Feed — arrow buttons** | `src/components/ui/FacebookFeed.tsx` | 140-160 |
+| **Activity Plans — Upload form fields** | `src/views/annual-plan/AnnualPlanView.tsx` | 195-230, 367-403 |
+| **Activity Plans — Excel parsing logic** | `src/app/api/activity-plans/route.ts` | 182-196 |
+| **Activity Plans — Status on upload** | `src/app/api/activity-plans/route.ts` | 200 (`status: "ดำเนินการแล้ว"`) |
 | **Theme colors (Light/Dark)** | `src/app/globals.css` | 8-56 |
-| **Nav menu items (Sidebar)** | `src/components/sidebar/SidebarMenu.ts` | 52-63 (GENERAL_MENUS array) |
-| **Sidebar groups & items** | `src/components/layout/Sidebar.tsx` | 202-290 (4 groups) |
-| **ปุ่มเมนูบนหน้าแรก (HomeView)** | `src/views/home/HomeView.tsx` | 9-16 (DEPARTMENT_ROUTES array) |
+| **Nav menu items (Sidebar)** | `src/components/layout/Sidebar.tsx` | 202-290 (4 groups) |
+| **ปุ่มเมนูบนหน้าแรก (HomeView)** | `src/views/home/HomeView.tsx` | 9-16 (DEPARTMENT_ROUTES) |
 | **Failed student mock data** | `src/components/layout/Sidebar.tsx` | 36-42 |
 | **Activities table data** | `src/app/page.tsx` | 20-26 |
 | **Overview dashboard stats** | `src/components/ui/OverviewCards.tsx` | 30-85 |
@@ -354,56 +373,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=sb_publishable_cP2ZTP5wWyEaYVcNq0xGlQ_3rV3E8Na
 | **Register form** | `src/app/register/page.tsx` | entire file |
 | **Teacher Dashboard** | `src/components/ui/TeacherDashboard.tsx` | entire file |
 | **Dashboard page** | `src/app/dashboard/page.tsx` | entire file |
-| **Dashboard layout** | `src/app/dashboard/layout.tsx` | entire file |
-| **API routes** | `src/app/api/auth/*` | per route |
 | **Database schema** | `supabase/migrations/*.sql` | per migration |
-
----
-
-## 🚀 Getting Started
-
-```bash
-# Install dependencies (one time only)
-npm install
-
-# Run development server
-npm run dev
-
-# Open in browser
-# http://localhost:3000
-```
-
-### Quick Start (Windows)
-Double-click `install-deps.bat` to install, then `run-dev.bat` to start.
-
-### Demo Accounts
-
-| Role | Username/Email | Password |
-|---|---|---|
-| **Teacher** | `teacher@udontech.ac.th` | `69319010015` |
-| **Admin (อวท.)** | `admin@udontech.ac.th` | `69319010015` |
-| **Student** | `69319010015` | `1419902419920` |
-
-> 🔐 **Google OAuth** requires a real `@udontech.ac.th` Google Workspace account.
-> Supabase Google provider must be enabled in the dashboard first.
-
----
-
-## 🖥️ How to Open the Website in VS Code
-
-1. Open Visual Studio Code → **File > Open Folder** → Select `aft-nexgen-cloud`
-2. Press **Ctrl + `** to open Terminal
-3. Run `npm install` (first time only)
-4. Run `npm run dev`
-5. Open browser → `http://localhost:3000`
-
-### Troubleshooting
-
-| ปัญหา | สาเหตุ | วิธีแก้ |
-|----------------|----------------|-------------------|
-| `'npm' is not recognized` | Node.js ไม่ได้ติดตั้ง | ดาวน์โหลด Node.js จาก https://nodejs.org/ |
-| `Port 3000 is already in use` | พอร์ตถูกใช้ | รัน `npm run dev -- -p 3001` |
-| `Module not found` | dependencies ไม่ได้ติดตั้ง | รัน `npm install` อีกครั้ง |
 
 ---
 
@@ -414,9 +384,31 @@ Double-click `install-deps.bat` to install, then `run-dev.bat` to start.
 3. **Run the migrations in order:**
    - First: `supabase/migrations/001_initial_schema.sql`
    - Second: `supabase/migrations/002_auth_system.sql`
-4. **Execute** the SQL to create tables, RLS policies, and storage bucket
-5. **Add users** via Supabase Auth dashboard
-6. **For Google OAuth**: Supabase Dashboard → Authentication → Providers → Google → Enable with `@udontech.ac.th` domain
+   - Third: `supabase/migrations/003_activity_plans.sql`
+4. **Or use the combined file:** Copy all from `run-all-migrations.sql` → paste → Run (one-shot)
+5. **Execute** the SQL to create tables (`profiles`, `projects`, `registration_requests`, `activity_plans`), RLS policies, and storage bucket
+6. **Add users** via Supabase Auth dashboard
+7. **For Google OAuth**: Supabase Dashboard → Authentication → Providers → Google → Enable with `@udontech.ac.th` domain
+
+### Activity Plans Table Structure (`activity_plans`)
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | UUID (auto) | Primary key |
+| `title` | TEXT | Plan name |
+| `fiscal_year` | TEXT | e.g. "2569" |
+| `club` | TEXT | Club name |
+| `description` | TEXT | Plan details |
+| `quarter` | TEXT | "1", "2", "3", "4" |
+| `status` | TEXT | ดำเนินการแล้ว / กำลังดำเนินการ / รอดำเนินการ |
+| `excel_data` | JSONB | Parsed Excel rows as JSON array |
+| `excel_columns` | JSONB | Excel column headers as JSON array |
+| `file_url` | TEXT | Link to uploaded file |
+| `file_type` | TEXT | xlsx / xls / pdf / docx / link |
+| `file_size` | INTEGER | File size in bytes |
+| `original_filename` | TEXT | Original uploaded filename |
+| `uploaded_at` | TIMESTAMPTZ | Upload timestamp |
+| `uploaded_by` | UUID | Links to auth.users |
 
 ---
 
@@ -444,6 +436,8 @@ The interface follows the **60-30-10 rule**:
 | Approve registrations | ❌ | ❌ | ✅ |
 | Edit project table | ❌ | ❌ | ✅ |
 | Upload files | ❌ | ❌ | ✅ |
+| **Upload activity plans** | ❌ | ❌ | ✅ |
+| **Delete activity plans** | ❌ | ❌ | ✅ |
 | View club directory | ✅ | ✅ | ✅ |
 | View forms/guidelines | ✅ | ✅ | ✅ |
 | Submit proposals | ✅ | ✅ | ✅ |
@@ -456,27 +450,19 @@ The interface follows the **60-30-10 rule**:
 **AFT NexGen Cloud** — Official project of Udon Thani Technical College (UDTC).
 Developed for educational administration purposes only.
 
-
 ---
 
 ## 📋 Recent Updates (7/21/2026)
 
 | Feature | Description |
 |---|---|
-| **Google OAuth Login** | Added "Sign in with Google" button with `@udontech.ac.th` domain restriction (`hd` param) |
-| **Domain Validation** | Server-side check `email.endsWith("@udontech.ac.th")` in `/api/auth/login` + OAuth callback |
-| **Login Tabs** | 3 tabs: นักเรียน/นักศึกษา อวท., อาจารย์, อาจารย์ อวท. |
-| **Admin Account** | New demo account: `admin@udontech.ac.th` / `69319010015` |
-| **Sidebar Group 4** | Added 🏫 Admin/Teacher อวท. section for teacher users |
-| **Teacher Dashboard** | Moved from homepage to `/dashboard` — teacher only |
-| **Dashboard Layout** | Removed Header from `/dashboard` (cleaner page) |
-| **Kanit Font** | Changed default font from Noto Sans Thai → Kanit with `@font-face` |
-| **TH Sarabun Font** | Added TH Sarabun New (ฟอนต์สารบรรณ) with all variants (Bold, Italic) |
-| **Font Files** | Moved `Font/` → `public/Font/` so browser can load them |
-| **Text Size Slider** | Replaced 3 pill buttons with slider bar (10-22px, default 18) |
-| **Slider Colors** | Thumb = yellow accent; track adapts to Light/Dark mode |
-| **Settings Labels** | "ฟอนต์มาตรฐานปัจจุบัน" → "Kanit"; notification text uses theme color |
-| **Overview Cards** | Removed yellow accent from "งบประมาณคงเหลือ" card |
-| **OAuth Callback** | New route `/api/auth/callback` with domain validation + session setup |
+| **Activity Plans — Full CRUD** | New `/api/activity-plans` route with GET, POST, DELETE. Teacher-only upload with file + form. |
+| **Excel Parsing** | `xlsx` npm library parses `.xlsx`/`.xls` files server-side — columns and rows stored as JSONB in `activity_plans` table |
+| **Activity Plans Page** | `/annual-plan` — real data from Supabase (not mock). Expandable cards show parsed Excel grid. |
+| **Delete Activity Plans** | Teacher-only 🗑️ trash button with confirmation dialog |
+| **Status on Upload** | New uploads automatically set to "ดำเนินการแล้ว" (no pending approval needed) |
+| **Combined Migration File** | `run-all-migrations.sql` — one file to run all 3 migrations at once |
+| **Supabase Connection** | `.env.local` fully configured with URL, anon key, and service role key |
+| **Service Role Client** | `createAdminClient()` bypasses RLS for demo teacher accounts |
 
 *Built with Next.js, Supabase, Tailwind CSS, and ☕ by the UDTC development team.*

@@ -119,6 +119,7 @@ function LoginPageContent() {
           localStorage.setItem("aft-user-type", "teacher");
           localStorage.setItem("aft-user-status", "APPROVED");
           document.cookie = "aft-is-logged-in=true; path=/; max-age=86400; SameSite=Lax";
+          document.cookie = "aft-user-type=teacher; path=/; max-age=86400; SameSite=Lax";
           document.cookie = "aft-user-status=APPROVED; path=/; max-age=86400; SameSite=Lax";
           router.push("/");
           return;
@@ -137,6 +138,7 @@ function LoginPageContent() {
           localStorage.setItem("aft-user-type", "teacher");
           localStorage.setItem("aft-user-status", "APPROVED");
           document.cookie = "aft-is-logged-in=true; path=/; max-age=86400; SameSite=Lax";
+          document.cookie = "aft-user-type=teacher; path=/; max-age=86400; SameSite=Lax";
           document.cookie = "aft-user-status=APPROVED; path=/; max-age=86400; SameSite=Lax";
           router.push("/");
           return;
